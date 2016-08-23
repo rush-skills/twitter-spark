@@ -1,0 +1,7 @@
+foreman start
+
+OR
+
+python streamer.py
+python server.py
+spark-submit analyse.py

@@ -1,0 +1,100 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Tweet Monitor</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.0.15/css/bulma.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <section class="section">
+            <div class="container">
+                <h1 class="is-text-centered is-fullwidth title is-1">View Tweet Details</h1>
+                <hr>
+                <div class="columns" id="tweet-wrapper">
+                    <div class="column is-4">
+                        <div class="image is-square">
+                            <img src="{{image}}">
+                        </div>
+                    </div>
+                    <div class="column is-8 columns is-mobile is-multiline">
+                        <div class="is-4 is-text-right column">
+                            <p><strong>Name</strong></p>
+                        </div>
+                        <div class="is-8 column">
+                            <p>{{tweet["user_name"]}}</p>
+                        </div>
+                        <div class="is-4 is-text-right column">
+                            <p><strong>Twitter Handle</strong></p>
+                        </div>
+                        <div class="is-8 column">
+                             <a target="_blank" href="https://twitter.com/{{tweet['user_handle']}}"><p>{{tweet["user_handle"]}}</p></a>
+                        </div>
+                        <div class="is-4 is-text-right column">
+                            <p><strong>Location</strong></p>
+                        </div>
+                        <div class="is-8 column">
+                            <p>{{tweet["place"]}}</p>
+                        </div>
+                        <div class="is-4 is-text-right column">
+                            <p><strong>User Description</strong></p>
+                        </div>
+                        <div class="is-8 column">
+                            <p>{{tweet["user_description"]}}</p>
+                        </div>
+                        <div class="is-4 is-text-right column">
+                            <p><strong>Tweet Text</strong></p>
+                        </div>
+                        <div class="is-8 column">
+                            <a target="_blank" href="https://twitter.com/statuses/{{tweet['id']}}"><p>{{tweet["text"]}}</p></a>
+                        </div>
+                        <div class="is-4 is-text-right column">
+                            <p><strong>Tweet Source</strong></p>
+                        </div>
+                        <div class="is-8 column">
+                            <p>{{tweet["source"]|safe}}</p>
+                        </div>
+                        <div class="is-4 is-text-right column">
+                            <p><strong>Time</strong></p>
+                        </div>
+                        <div class="is-8 column">
+                            <p>{{tweet["timestamp_ms"]}}</p>
+                        </div>
+                        <div class="is-4 is-text-right column">
+                            <p><strong>Coordinates</strong></p>
+                        </div>
+                        <div class="is-8 column">
+                            <p>{{coordinates}}</p>
+                        </div>
+                        <div class="is-4 is-text-right column">
+                            <p><strong>Twitter Filter Level</strong></p>
+                        </div>
+                        <div class="is-8 column">
+                            <p>{{tweet["filter_level"]}}</p>
+                        </div>
+                        <div class="is-4 is-text-right column">
+                            <p><strong>Twitter ID</strong></p>
+                        </div>
+                        <div class="is-8 column">
+                            <p>{{tweet["user_id"]}}</p>
+                        </div>
+                        <div class="is-4 is-text-right column">
+                            <p><strong>Tweet ID</strong></p>
+                        </div>
+                        <div class="is-8 column">
+                            <p>{{tweet["id"]}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>

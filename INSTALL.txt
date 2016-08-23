@@ -1,0 +1,46 @@
+Installing on Ubuntu:
+
+Install dependencies
+sudo apt-get install git
+
+Install Python
+https://www.continuum.io/downloads
+wget https://3230d63b5fc54e62148e-c95ac804525aac4b6dba79b00b39d1d3.ssl.cf1.rackcdn.com/Anaconda2-2.5.0-Linux-x86_64.sh
+bash Anaconda2-2.5.0-Linux-x86_64.sh
+keep pressing enter/yes/continue. in the last step (add to bashrc where default is no, type yes)
+
+Install Spark
+https://districtdatalabs.silvrback.com/getting-started-with-spark-in-python
+https://spark.apache.org/downloads.html
+Choose the hadoop 2.6 version
+tar -xvf spark-1.6.0-bin-hadoop2.6
+mv spark-1.6.0-bin-hadoop2.6 /srv/spark-1.6.0
+ln -s /srv/spark-1.2.0 /srv/spark
+add to ~/.bashrc
+export SPARK_HOME=/srv/spark
+export PATH=$SPARK_HOME/bin:$PATH
+reload ~/.bashrc or logout/login
+run pyspark to confirm installation
+
+Fix verbosity
+cp $SPARK_HOME/conf/log4j.properties.template \
+      $SPARK_HOME/conf/log4j.properties
+
+nano $SPARK_HOME/conf/log4j.properties
+change INFO to WARN in the file
+save with ctrl+o, exit with ctrl+x
+
+Install MongoDB
+sudo apt-get install mongodb mongodb-clients
+
+Install TwitterAPI for twitter streaming
+pip install -U TwitterAPI
+
+Install textblob for sentiment analysis
+pip install -U textblob
+
+install pymongo for mongodb support
+pip install -U pymongo
+
+install flash for webserver
+conda install flask

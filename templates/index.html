@@ -1,0 +1,108 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Tweet Monitor</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.0.15/css/bulma.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <style type="text/css">
+        .flagged{
+            background-color: #FFFFCC;
+        }
+        </style>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- Add your site or application content here -->
+
+        <section class="section is-medium">
+            <div class="container">
+                <h1 class="is-text-centered is-fullwidth title is-2">Monitored Tweets for "Google" {%if user%}({{user}}) <small><a href="/logout">Logout</a></small>{%else%}<small><a href="/login">Login</a></small>{%endif%}</h1>
+                <hr>
+                <div class="columns">
+                  <div class="column is-half">
+                    <h2 class="subtitle is-text-centered is-4">Positive Tweets</h2>
+                    <hr>
+                    <div class="articles" id="positive-wrapper"></div>
+                  </div>
+                    <div class="column is-half">
+                      <h2 class="subtitle is-text-centered is-4">Negative Tweets</h2>
+                      <hr>
+                      <div class="articles" id="negative-wrapper"></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+        <script type="text/javascript">
+          $(document).on('ready',function () {
+            $(document).on('click','.tweet',function (e) {
+                mid = $(this).data('mid');
+                window.open("/tweet/"+mid+"?stage={{user}}","_blank");
+            });
+            $(document).on('click',".flag-button", function(e){
+                e.stopPropagation();
+                var uid = $(this).parent().parent().data("mid");
+                elem = $(this);
+                $.get("/api/flag/"+uid+"?stage={{user}}", function( data ) {
+                    $(this).fadeIn("slow", function() {
+                        elem.parent().parent().addClass("flagged");
+                        elem.html("FLAGGED");
+                        elem.addClass("is-disabled");
+                    });
+                });
+
+            });
+            var last = "";
+            function get_html(val){
+              return '<article class="media tweet" data-mid="'+val._id.$oid+'"><div class="media-left"><figure class="image is-64x64"><img src="' + val.user_profile_image_url + '" alt="Image"></figure></div><div class="media-content"><div class="content"><p><a target="_blank" href="https://twitter.com/statuses/'+val.id+'"><strong>' + val.user_name + '</strong></a> <a target="_blank" href="https://twitter.com/'+val.user_handle+'"><small>'+ val.user_handle + '</small></a> <small>' + val.timestamp_ms + '</small><br>'+val.text+'</p></div><span class="icon is-small"><i class="fa fa-map-marker"></i></span><span>'+val.place+'</span></div></div>{%if user and user!="stage3"%}<div class="media-right"><button class="button flag-button">FLAG</button></div>{%endif%}</article>';
+            }
+            function init(){
+              $.getJSON('/api?stage={{user}}', function(data) {
+                $.each( data.pos_tweets, function(key, val) {
+                  // console.log(val);
+                  $('#positive-wrapper').prepend(get_html(val));
+                  last = val._id.$oid;
+                });
+                $.each( data.neg_tweets, function(key, val) {
+                  // console.log(val);
+                  $('#negative-wrapper').prepend(get_html(val));
+                  last = val._id.$oid;
+                });
+              });
+            }
+            function update(){
+              // if($('#articles-wrapper .tweet').length > 0){
+                // lastid = $('#articles-wrapper .tweet').first().data('mid');
+                $.getJSON('/api/'+last+"?stage={{user}}", function(data) {
+                  $.each( data.pos_tweets, function(key, val) {
+                    // console.log(val);
+                    $('#positive-wrapper').prepend(get_html(val));
+                    last = val._id.$oid;
+                  });
+                  $.each( data.neg_tweets, function(key, val) {
+                    // console.log(val);
+                    $('#negative-wrapper').prepend(get_html(val));
+                    last = val._id.$oid;
+                  });
+                });
+              // }
+            // else{
+              // init();
+            // }
+            }
+            init();
+            setInterval(update, 10000);
+          })
+        </script>
+    </body>
+</html>
